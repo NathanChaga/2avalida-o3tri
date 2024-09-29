@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!--
+Nome: Nathan das Chagas Gueler- Nº: 25 - Turma: 2°B
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movimento do Componente</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            border: 1px solid black;
+            display: block;
+            margin: 20px auto;
+        }
+        .controls {
+            margin: 20px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Movimento do Componente com Controles</h1>
+    <canvas id="myCanvas" width="500" height="400"></canvas>
+    <div class="controls">
+        <button id="up">Up</button><br>
+        <button id="left">Left</button>
+        <button id="stop">Stop</button>
+        <button id="right">Right</button><br>
+        <button id="down">Down</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let x = canvas.width / 2;
+        let y = canvas.height / 2;
+        const size = 30;
+
+        let dx = 0;
+        let dy = 0;
+
+        let interval;
+
+        // Função para desenhar o componente (quadrado)
+        function drawComponent() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0095DD";
+            ctx.fillRect(x, y, size, size);
+        }
+
+        // Função para mover o componente
+        function moveComponent() {
+            x += dx;
+            y += dy;
+
+            if (x < 0) x = 0;
+            if (y < 0) y = 0;
+            if (x + size > canvas.width) x = canvas.width - size;
+            if (y + size > canvas.height) y = canvas.height - size;
+
+            drawComponent();
+        }
+
+        // Funções para iniciar e parar o movimento
+        function startMovement() {
+            if (!interval) {
+                interval = setInterval(moveComponent, 10);
+            }
+        }
+
+        function stopMovement() {
+            clearInterval(interval);
+            interval = null;
+        }
+
+        // Eventos de pressionar e soltar os botões
+        document.getElementById("up").onmousedown = function() { dy = -2; startMovement(); };
+        document.getElementById("down").onmousedown = function() { dy = 2; startMovement(); };
+        document.getElementById("left").onmousedown = function() { dx = -2; startMovement(); };
+        document.getElementById("right").onmousedown = function() { dx = 2; startMovement(); };
+
+        document.getElementById("up").onmouseup = stopMovement;
+        document.getElementById("down").onmouseup = stopMovement;
+        document.getElementById("left").onmouseup = stopMovement;
+        document.getElementById("right").onmouseup = stopMovement;
+
+        document.getElementById("stop").onclick = stopMovement;
+
+        // Inicializando o componente no canvas
+        drawComponent();
+    </script>
+
+</body>
+</html>
